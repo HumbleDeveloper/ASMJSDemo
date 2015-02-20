@@ -32,6 +32,8 @@ PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER "com.humblebundle.HumbleAsmjsDemo"
     MACOSX_BUNDLE_COPYRIGHT "© 2015 Humble Bundle, Inc. "
 )
+source_group("Source" REGULAR_EXPRESSION "\\.(cpp|h)$")
+
 
 if(EMSCRIPTEN)
     set(EM_TARGET_JS ${PROJECT_NAME}.js)
