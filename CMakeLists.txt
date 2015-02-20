@@ -27,6 +27,10 @@ LINK
     ${OPENGL_gl_LIBRARY}
 PROPERTIES
     FOLDER Executables
+    MACOSX_BUNDLE_BUNDLE_NAME "Humble asm.js Demo"
+    MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "com.humblebundle.HumbleAsmjsDemo"
+    MACOSX_BUNDLE_COPYRIGHT "© 2015 Humble Bundle, Inc. "
 )
 
 if(EMSCRIPTEN)
