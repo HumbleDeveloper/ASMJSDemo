@@ -1,0 +1,39 @@
+cmake_minimum_required(VERSION 2.8.12)
+Project(HumbleASMJSDemo)
+
+### pull in boilerplate cmake
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(BoilerPlate)
+include(UtilityFunctions)
+
+# this sets the paths that cmake will use to locate libs (via the FindXXX.cmake or XXConfig.cmake scripts)
+LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/SDL2)
+
+### Find Libraries
+find_package(OpenGL)
+find_package(SDL2 NO_CMAKE_FIND_ROOT_PATH)
+if(EMSCRIPTEN)
+    set(OPENGL_gl_LIBRARY "")
+endif()
+
+CreateProgram(${PROJECT_NAME}
+DIRS
+    src
+INCLUDES
+    src
+    ${SDL2_INCLUDE_DIRS}
+LINK
+    ${SDL2_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
+PROPERTIES
+    FOLDER Executables
+)
+
+if(EMSCRIPTEN)
+    set(EM_TARGET_JS ${PROJECT_NAME}.js)
+    configure_file(shell.html index.html @ONLY)
+endif()
+
+## this auto copies the needed libraries / frameworks over
+CopyDependentLibs(${PROJECT_NAME})
+
