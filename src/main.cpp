@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     last_time = SDL_GetTicks();
 
 #ifdef EMSCRIPTEN
-    emscripten_set_main_loop_arg(loop_iteration, 0, 1, game);
+    emscripten_set_main_loop_arg((em_arg_callback_func)loop_iteration, game.get(), 0, 1);
 #else
     while (!done) {
         loop_iteration(game.get());
