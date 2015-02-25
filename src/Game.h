@@ -15,7 +15,7 @@ class Game {
     Player m_Player;
     Renderer& m_renderer;
 
-    float m_angle = 0.0f;
+    float m_angle;
 public:
     Game(Renderer& r);
 

@@ -10,7 +10,7 @@
 
 #include <cmath>
 
-Game::Game(Renderer& r) : m_renderer(r)
+Game::Game(Renderer& r) : m_renderer(r), m_angle(0.0f)
 {
     m_renderer.set_swap_interval(1);
 }
