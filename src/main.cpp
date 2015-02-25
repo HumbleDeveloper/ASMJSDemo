@@ -4,8 +4,6 @@
 #include <emscripten/emscripten.h>
 #endif
 
-#include <memory>
-
 #include "Game.h"
 #include "Renderer_SDL2.h"
 
@@ -49,22 +47,22 @@ int main(int argc, char* argv[])
     int w,h;
     SDL_GetWindowSize(win, &w, &h);
 
-    std::auto_ptr<Renderer> game_renderer(new Renderer_SDL2(win, renderer));
+    Renderer* game_renderer = new Renderer_SDL2(win, renderer);
 
-    std::auto_ptr<Game> game(new Game(*game_renderer));
+    Game* game = new Game(*game_renderer);
 
     last_time = SDL_GetTicks();
 
 #ifdef EMSCRIPTEN
-    emscripten_set_main_loop_arg((em_arg_callback_func)loop_iteration, game.get(), 0, 1);
+    emscripten_set_main_loop_arg((em_arg_callback_func)loop_iteration, game, 0, 1);
 #else
     while (!done) {
-        loop_iteration(game.get());
+        loop_iteration(game);
     }
 #endif
 
-    game.reset();
-    game_renderer.reset();
+    delete game;
+    delete game_renderer;
 
     SDL_Quit();
 
