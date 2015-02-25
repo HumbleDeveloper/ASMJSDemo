@@ -201,6 +201,8 @@ function(_BuildDynamicTarget name type)
                     file(GLOB_RECURSE _files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                         ${dir}/*.c
                         ${dir}/*.cpp
+                        ${dir}/*.cxx
+                        ${dir}/*.cc
                         ${dir}/*.h
                         ${dir}/*.hpp
                         ${dir}/*.inl
@@ -211,6 +213,8 @@ function(_BuildDynamicTarget name type)
                     file(GLOB _files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                         ${dir}/*.c
                         ${dir}/*.cpp
+                        ${dir}/*.cxx
+                        ${dir}/*.cc
                         ${dir}/*.h
                         ${dir}/*.hpp
                         ${dir}/*.inl
@@ -495,8 +499,8 @@ function(CopyDependentLibs target)
     file(WRITE ${_SCRIPT_FILE}
         "# Generated Script file\n"
         "include(GetPrerequisites)\n"
-        "set(source_libs ${_libs})\n"
-        "set(extra_libs ${_extra_libs})\n"
+        "set(source_libs \"${_libs}\")\n"
+        "set(extra_libs \"${_extra_libs}\")\n"
         "\n"
         "if (APPLE) # an OS X Bundle\n"
         "  include(BundleUtilities)\n"
