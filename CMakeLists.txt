@@ -33,6 +33,8 @@ LINK
     ${SDL2_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
     lodepng
+FLAGS
+    $<$<CXX_COMPILER_ID:GNU>:-std=c++0x>
 PRE_JS
     ${DATA_FILE}
 PROPERTIES
