@@ -17,6 +17,8 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
     m_renderables.push_back(&m_Player);
 
     m_Player.set_position(Vector2i(50));
+
+    m_renderer.set_logical_size(Vector2i(768, 480));
 }
 
 void Game::update(float delta)
