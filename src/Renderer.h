@@ -16,14 +16,17 @@
 
 class Renderer {
 protected:
-    int m_w, m_h;
+    Vector2i m_size, m_logical_size;
+    bool m_logical_set;
 public:
-    Renderer() {}
+    Renderer() : m_logical_set(false) {}
     virtual ~Renderer() {}
+
+    virtual void set_logical_size(Vector2i size, bool keepAspect = true) = 0;
 
     virtual void set_swap_interval(int swap) = 0;
     virtual void update_window_size() = 0;
-    virtual void clear() = 0;
+    virtual void clear(const Color& c = Color()) = 0;
     virtual void present() = 0;
     virtual void draw_rect_fill(const Rect& r, const Color& c) = 0;
 
@@ -31,6 +34,9 @@ public:
     virtual void draw_texture(TextureRef texture, const Vector2i& dst, float angle = 0.0f);
     virtual void draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle = 0.0f) = 0;
 
-    int width() { return m_w; }
-    int height() { return m_h; }
+    Vector2i size() { return m_size; }
+    int width() { return m_size.x; }
+    int height() { return m_size.y; }
+
+    Vector2i logical_size() { return m_logical_size; }
 };

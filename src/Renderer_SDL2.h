@@ -20,9 +20,11 @@ class Renderer_SDL2 : public Renderer {
 public:
     Renderer_SDL2(SDL_Window* win, SDL_Renderer* rend);
 
+    void set_logical_size(Vector2i size, bool keepAspect = true);
+
     void set_swap_interval(int swap);
     void update_window_size();
-    void clear();
+    void clear(const Color& c = Color());
     void draw_rect_fill(const Rect& r, const Color& c);
     void present();
 

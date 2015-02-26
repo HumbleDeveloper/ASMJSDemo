@@ -18,7 +18,17 @@ Renderer_SDL2::Renderer_SDL2(SDL_Window* win, SDL_Renderer* rend) : m_win(win), 
 
 void Renderer_SDL2::update_window_size()
 {
-    SDL_GetWindowSize(m_win, &m_w, &m_h);
+    SDL_GetWindowSize(m_win, &m_size.x, &m_size.y);
+    if (!m_logical_set) {
+        m_logical_size = m_size;
+    }
+}
+
+void Renderer_SDL2::set_logical_size(Vector2i size, bool keepAspect)
+{
+    m_logical_set = true;
+    m_logical_size = size;
+    SDL_RenderSetLogicalSize(m_rend, size.x, size.y);
 }
 
 void Renderer_SDL2::set_swap_interval(int swap)
@@ -46,9 +56,9 @@ void Renderer_SDL2::draw_texture(TextureRef texture, const Rect& src, const Rect
     SDL_RenderCopyEx(m_rend, stex, (const SDL_Rect*)&src, (const SDL_Rect*)&dst, angle, NULL, SDL_FLIP_NONE);
 }
 
-void Renderer_SDL2::clear()
+void Renderer_SDL2::clear(const Color& color)
 {
-    set_draw_color(Color());
+    set_draw_color(color);
     SDL_RenderClear(m_rend);
 }
 
