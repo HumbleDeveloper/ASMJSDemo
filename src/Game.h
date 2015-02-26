@@ -10,12 +10,15 @@
 
 #include "Renderer.h"
 #include "Player.h"
+#include "Renderable.h"
+
+#include <list>
 
 class Game {
-    Player m_Player;
     Renderer& m_renderer;
+    Player m_Player;
 
-    float m_angle;
+    std::list<Renderable*> m_renderables;
 public:
     Game(Renderer& r);
 

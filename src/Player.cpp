@@ -8,7 +8,7 @@
 
 #include "Player.h"
 
-Player::Player()
+Player::Player(TextureRef texture) : Sprite(texture)
 {
     
 }

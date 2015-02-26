@@ -4,6 +4,8 @@
 #include <emscripten/emscripten.h>
 #endif
 
+#include "AssetManager.h"
+#include "FileSystem.h"
 #include "Game.h"
 #include "Renderer_SDL2.h"
 
@@ -46,6 +48,25 @@ int main(int argc, char* argv[])
 
     int w,h;
     SDL_GetWindowSize(win, &w, &h);
+
+    char *base = SDL_GetBasePath();
+    std::string base_path(base);
+    SDL_free(base);
+
+    std::string asset_path_marker = FileSystem::join_path(base_path, "asset_path.txt");
+    if (FileSystem::exists(asset_path_marker)) {
+        FILE* fp = FileSystem::open(asset_path_marker);
+        if (fp) {
+            char buff[1024];
+            fgets(buff, sizeof(buff), fp);
+            base_path = FileSystem::join_path(base_path, buff);
+            fclose(fp);
+        }
+    }
+
+    AssetManager *asset_manager = new AssetManager();
+    asset_manager->add_path(base_path);
+    AssetManager::setDefaultManager(asset_manager);
 
     Renderer* game_renderer = new Renderer_SDL2(win, renderer);
 

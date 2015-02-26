@@ -8,10 +8,14 @@
 
 #pragma once
 
+template <typename T>
 struct Vector2 {
-    float x;
-    float y;
+    T x, y;
 
-    Vector2() : x(0), y(0) {}
-    Vector2(float _x, float _y) : x(_x), y(_y) {}
+    Vector2() : x(T()), y(T()) {}
+    Vector2(T _v) : x(_v), y(_v) {}
+    Vector2(T _x, T _y) : x(_x), y(_y) {}
 };
+
+typedef Vector2<float> Vector2f;
+typedef Vector2<int> Vector2i;

@@ -13,6 +13,8 @@
 #include <SDL.h>
 
 class Renderer_SDL2 : public Renderer {
+    friend class Texture_SDL2;
+
     SDL_Window* m_win;
     SDL_Renderer* m_rend;
 public:
@@ -24,6 +26,8 @@ public:
     void draw_rect_fill(const Rect& r, const Color& c);
     void present();
 
+    TextureRef load_texture(const std::string& name);
+    void draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle = 0.0f);
 private:
     void set_draw_color(const Color& c);
 };

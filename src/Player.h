@@ -8,10 +8,9 @@
 
 #pragma once
 
-#include "Vector2.h"
+#include "Sprite.h"
 
-class Player {
-    Vector2 m_position;
+class Player : public Sprite {
 public:
-    Player();
+    Player(TextureRef texture);
 };
