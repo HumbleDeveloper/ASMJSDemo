@@ -63,6 +63,11 @@ int main(int argc, char* argv[])
             fclose(fp);
         }
     }
+#ifdef EMSCRIPTEN
+    else {
+        base_path = FileSystem::join_path(base_path, "assets");
+    }
+#endif
 
     AssetManager *asset_manager = new AssetManager();
     asset_manager->add_path(base_path);

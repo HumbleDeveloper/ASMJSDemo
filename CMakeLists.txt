@@ -17,6 +17,10 @@ add_subdirectory(lib/lodepng lodepng)
 
 if(EMSCRIPTEN)
     set(OPENGL_gl_LIBRARY "")
+
+    EmscriptenCreatePackage(${PROJECT_NAME} DATA_FILE
+        PRELOAD ${CMAKE_CURRENT_SOURCE_DIR}/assets@assets
+    )
 endif()
 
 CreateProgram(${PROJECT_NAME}
@@ -29,6 +33,8 @@ LINK
     ${SDL2_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
     lodepng
+PRE_JS
+    ${DATA_FILE}
 PROPERTIES
     FOLDER Executables
     MACOSX_BUNDLE_BUNDLE_NAME "Humble asm.js Demo"
