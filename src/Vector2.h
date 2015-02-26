@@ -16,6 +16,11 @@ struct Vector2 {
     Vector2(T _v) : x(_v), y(_v) {}
     Vector2(T _x, T _y) : x(_x), y(_y) {}
 
+    template<typename T2>
+    const Vector2<T2> as() const {
+        return Vector2<T2>(T2(x), T2(y));
+    }
+
     Vector2<T>& operator -=(const Vector2<T>& o) {
         this->x -= o.x;
         this->y -= o.y;

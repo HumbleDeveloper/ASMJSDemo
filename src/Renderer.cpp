@@ -10,7 +10,7 @@
 
 void Renderer::draw_texture(TextureRef texture, const Vector2i &dst_pos, float angle)
 {
-    Vector2i size(texture->size());
+    const Vector2i& size = texture->size();
     Rect src(Vector2i(), size);
     Rect dst(dst_pos, size);
 

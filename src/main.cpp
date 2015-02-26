@@ -30,12 +30,11 @@ void loop_iteration(Game* game)
                     case SDL_SCANCODE_RIGHT:
                         game->apply_input(Game::InputForce_X_AXIS, e.key.state == SDL_PRESSED ? 32767 : 0);
                         break;
-                    case SDL_SCANCODE_SPACE:
+                    case SDL_SCANCODE_UP:
                         game->apply_input(Game::InputForce_SHOOT, e.key.state == SDL_PRESSED ? 1 : 0);
                         break;
                     case SDL_SCANCODE_ESCAPE:
                         game->apply_input(Game::InputForce_START, e.key.state == SDL_PRESSED ? 1 : 0);
-
                     default:
                         break;
                 }

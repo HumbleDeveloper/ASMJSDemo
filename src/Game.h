@@ -29,7 +29,13 @@ private:
 
     int inputValues[InputForce_MAX];
 
-    std::list<Renderable*> m_renderables;
+    std::list<Projectile> m_projectiles;
+
+    static const int MAX_LAYERS = 2;
+    static const int TORPEDO_VELOCITY = 128;
+
+    std::list<Renderable*> m_renderables[MAX_LAYERS];
+    std::list<Updatable*> m_updatables;
 public:
     Game(Renderer& r);
 
@@ -37,4 +43,8 @@ public:
 
     void update(float delta);
     void render();
+
+    void add_renderable(Renderable* renderable, int layer = 0);
+
+    void fire_torpedo(Player& player);
 };
