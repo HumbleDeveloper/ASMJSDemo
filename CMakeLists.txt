@@ -12,6 +12,8 @@ LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/SDL2)
 ### Find Libraries
 find_package(OpenGL)
 find_package(SDL2 NO_CMAKE_FIND_ROOT_PATH)
+add_subdirectory(lib/lodepng lodepng)
+
 if(EMSCRIPTEN)
     set(OPENGL_gl_LIBRARY "")
 endif()
@@ -25,6 +27,7 @@ INCLUDES
 LINK
     ${SDL2_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
+    lodepng
 PROPERTIES
     FOLDER Executables
     MACOSX_BUNDLE_BUNDLE_NAME "Humble asm.js Demo"
