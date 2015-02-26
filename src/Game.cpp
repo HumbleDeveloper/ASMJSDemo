@@ -20,6 +20,7 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
 
     m_Player.set_position(Vector2i(m_renderer.logical_size().x / 2, m_renderer.logical_size().y - m_Player.size().y / 2));
     m_Player.set_center(m_Player.size() / 2);
+    m_Player.set_move_range(Vector2i(m_Player.center().x, m_Player.position().y), Vector2i(m_renderer.logical_size().x - m_Player.center().x, m_Player.position().y));
 }
 
 void Game::apply_input(Game::InputForce force, int value)
