@@ -21,6 +21,25 @@ void loop_iteration(Game* game)
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         switch (e.type) {
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                switch (e.key.keysym.scancode) {
+                    case SDL_SCANCODE_LEFT:
+                        game->apply_input(Game::InputForce_X_AXIS, e.key.state == SDL_PRESSED ? -32767 : 0);
+                        break;
+                    case SDL_SCANCODE_RIGHT:
+                        game->apply_input(Game::InputForce_X_AXIS, e.key.state == SDL_PRESSED ? 32767 : 0);
+                        break;
+                    case SDL_SCANCODE_SPACE:
+                        game->apply_input(Game::InputForce_SHOOT, e.key.state == SDL_PRESSED ? 1 : 0);
+                        break;
+                    case SDL_SCANCODE_ESCAPE:
+                        game->apply_input(Game::InputForce_START, e.key.state == SDL_PRESSED ? 1 : 0);
+
+                    default:
+                        break;
+                }
+                break;
             case SDL_QUIT:
                 done = true;
                 return;

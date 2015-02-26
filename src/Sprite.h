@@ -14,12 +14,21 @@
 #include "Vector2.h"
 
 class Sprite : public Renderable {
-    Vector2i m_position;
     TextureRef m_texture;
+    Vector2i m_position;
+    Vector2i m_size;
+    Vector2i m_center;
 public:
     Sprite(TextureRef m_texture);
     virtual void render(Renderer& rend);
 
     void set_position(const Vector2i& position) { m_position = position; }
     const Vector2i& position() { return m_position; }
+
+    void move_position_by(const Vector2i& adjust_position);
+
+    void set_center(const Vector2i& center) { m_center = center; }
+    const Vector2i& center() { return m_center; }
+
+    const Vector2i& size() { return m_size; }
 };

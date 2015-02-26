@@ -16,13 +16,27 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
 
     m_renderables.push_back(&m_Player);
 
-    m_Player.set_position(Vector2i(50));
-
     m_renderer.set_logical_size(Vector2i(768, 480));
+
+    m_Player.set_position(Vector2i(m_renderer.logical_size().x / 2, m_renderer.logical_size().y - m_Player.size().y / 2));
+    m_Player.set_center(m_Player.size() / 2);
 }
+
+void Game::apply_input(Game::InputForce force, int value)
+{
+    if (force >= 0 && force < InputForce_MAX) {
+        inputValues[force] = value;
+    }
+}
+
+#define PLAYER_X_SPEED 0.02
 
 void Game::update(float delta)
 {
+    if (inputValues[InputForce_X_AXIS]) {
+        int distance = inputValues[InputForce_X_AXIS] * delta * PLAYER_X_SPEED;
+        m_Player.move_position_by(Vector2i(distance, 0));
+    }
 }
 
 void Game::render()
