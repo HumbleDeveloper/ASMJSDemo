@@ -5,6 +5,7 @@ Project(HumbleASMJSDemo)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(BoilerPlate)
 include(UtilityFunctions)
+include(AssetUtilities)
 
 # this sets the paths that cmake will use to locate libs (via the FindXXX.cmake or XXConfig.cmake scripts)
 LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/SDL2)
@@ -46,3 +47,6 @@ endif()
 ## this auto copies the needed libraries / frameworks over
 CopyDependentLibs(${PROJECT_NAME})
 
+if(NOT EMSCRIPTEN)
+    CreateFolderMarkerFile(${PROJECT_NAME} asset_path.txt ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+endif()
