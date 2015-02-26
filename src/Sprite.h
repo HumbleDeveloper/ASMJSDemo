@@ -23,12 +23,12 @@ public:
     virtual void render(Renderer& rend);
 
     void set_position(const Vector2i& position) { m_position = position; }
-    const Vector2i& position() { return m_position; }
+    const Vector2i& position() const { return m_position; }
 
     void move_position_by(const Vector2i& adjust_position);
 
     void set_center(const Vector2i& center) { m_center = center; }
-    const Vector2i& center() { return m_center; }
+    const Vector2i& center() const { return m_center; }
 
-    const Vector2i& size() { return m_size; }
+    const Vector2i& size() const { return m_size; }
 };

@@ -22,7 +22,7 @@ protected:
 public:
     int width() { return m_size.x; }
     int height() { return m_size.y; }
-    Vector2i size() { return m_size; }
+    const Vector2i& size() { return m_size; }
 
     static TextureRef NullTexture;
 };

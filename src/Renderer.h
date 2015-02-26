@@ -34,9 +34,9 @@ public:
     virtual void draw_texture(TextureRef texture, const Vector2i& dst, float angle = 0.0f);
     virtual void draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle = 0.0f) = 0;
 
-    Vector2i size() { return m_size; }
-    int width() { return m_size.x; }
-    int height() { return m_size.y; }
+    const Vector2i& size() const { return m_size; }
+    int width() const { return m_size.x; }
+    int height() const { return m_size.y; }
 
-    Vector2i logical_size() { return m_logical_size; }
+    const Vector2i& logical_size() const { return m_logical_size; }
 };
