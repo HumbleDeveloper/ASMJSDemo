@@ -35,6 +35,8 @@ LINK
     lodepng
 FLAGS
     $<$<CXX_COMPILER_ID:GNU>:-std=c++0x>
+    $<$<CXX_COMPILER_ID:Clang>:-std=c++0x>
+    $<$<CXX_COMPILER_ID:AppleClang>:-std=c++0x>
 PRE_JS
     ${DATA_FILE}
 PROPERTIES
