@@ -9,3 +9,4 @@ Keep an eye on the developer blog for more asm.js posts and development resource
 
 http://developer.humblebundle.com/
 
+- Team Humble Developer
