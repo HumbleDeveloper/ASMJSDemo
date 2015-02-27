@@ -8,7 +8,7 @@ include(UtilityFunctions)
 include(AssetUtilities)
 
 # this sets the paths that cmake will use to locate libs (via the FindXXX.cmake or XXConfig.cmake scripts)
-LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/SDL2)
+LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL2)
 
 ### Find Libraries
 find_package(OpenGL)
