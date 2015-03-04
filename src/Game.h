@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "Renderable.h"
+#include "Enemy.h"
 
 #include <list>
 
@@ -30,6 +31,7 @@ private:
     int inputValues[InputForce_MAX];
 
     std::list<Projectile> m_projectiles;
+    std::list<Enemy> m_enemies;
 
     static const int MAX_LAYERS = 2;
     static const int TORPEDO_VELOCITY = 128;
@@ -45,6 +47,7 @@ public:
     void render();
 
     void add_renderable(Renderable* renderable, int layer = 0);
-
+private:
     void fire_torpedo(Player& player);
+    void check_enemies();
 };

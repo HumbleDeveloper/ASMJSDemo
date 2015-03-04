@@ -9,6 +9,10 @@
 #include "Game.h"
 
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+#include <algorithm>
 
 Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
 {
@@ -26,6 +30,8 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
     for (int i = 0; i < InputForce_MAX; ++i) {
         inputValues[i] = 0;
     }
+
+    std::srand(std::time(0));
 }
 
 void Game::apply_input(Game::InputForce force, int value)
@@ -36,6 +42,12 @@ void Game::apply_input(Game::InputForce force, int value)
 }
 
 #define PLAYER_X_SPEED 0.02
+#define ENEMY_MAX 3
+#define ENEMY_PROBABILITY 5
+#define ENEMY_ROTATION 45.0f
+#define ENEMY_SPEED 64.0f
+#define ENEMY_START_BASE 80.0f
+#define ENEMY_START_RANGE 50.0f
 
 void Game::update(float delta)
 {
@@ -58,6 +70,7 @@ void Game::update(float delta)
     if (inputValues[InputForce_SHOOT]) {
         fire_torpedo(m_Player);
     }
+    check_enemies();
 }
 
 void Game::add_renderable(Renderable *renderable, int layer)
@@ -86,6 +99,12 @@ void Game::render()
     m_renderer.present();
 }
 
+static float random(float range)
+{
+    int r = std::rand();
+    return float(r) / RAND_MAX * range;
+}
+
 void Game::fire_torpedo(Player &player)
 {
     if (!player.can_shoot() || !player.fire_torpedo()) {
@@ -106,4 +125,36 @@ void Game::fire_torpedo(Player &player)
     it->activate();
 
     add_renderable(&(*it), 1);
+}
+
+template <typename T>
+bool isActive(const T& o) {
+    return o.active();
+}
+
+void Game::check_enemies()
+{
+    if (std::count_if(m_enemies.begin(), m_enemies.end(), isActive<Enemy>) < ENEMY_MAX) {
+        if (random(100.0f) < ENEMY_PROBABILITY) {
+            float angle = random(90.0f);
+            angle -= 45.0f;
+            if (random(100.0f) >= 50.0f) {
+                angle += 180.0f;
+            }
+            angle *= M_PI / 180.0f;
+
+            Vector2f velocity(std::cos(angle), std::sin(angle));
+
+            m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Rect(m_renderer.logical_size()), ENEMY_ROTATION));
+            Enemy &enemy = m_enemies.back();
+
+            Vector2f position(-enemy.size().x / 2, ENEMY_START_BASE + random(ENEMY_START_RANGE));
+            if (velocity.x < 0) {
+                position.x = m_renderer.logical_size().x + enemy.size().x / 2;
+            }
+            enemy.set_position(position);
+            enemy.activate();
+            add_renderable(&enemy, 0);
+        }
+    }
 }
