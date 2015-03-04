@@ -18,8 +18,9 @@ protected:
     Vector2i m_size;
 
     Texture() {}
-    virtual ~Texture() {}
 public:
+    virtual ~Texture() {}
+
     int width() { return m_size.x; }
     int height() { return m_size.y; }
     const Vector2i& size() { return m_size; }

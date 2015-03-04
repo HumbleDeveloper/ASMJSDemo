@@ -12,13 +12,17 @@
 
 #include <SDL.h>
 
+#include <map>
+
 class Renderer_SDL2 : public Renderer {
     friend class Texture_SDL2;
 
     SDL_Window* m_win;
     SDL_Renderer* m_rend;
+    std::map<std::string, TextureRef> m_textureCache;
 public:
     Renderer_SDL2(SDL_Window* win, SDL_Renderer* rend);
+    ~Renderer_SDL2();
 
     void set_logical_size(Vector2i size, bool keepAspect = true);
 

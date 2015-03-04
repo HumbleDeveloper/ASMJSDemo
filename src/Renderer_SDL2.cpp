@@ -16,6 +16,14 @@ Renderer_SDL2::Renderer_SDL2(SDL_Window* win, SDL_Renderer* rend) : m_win(win), 
     update_window_size();
 }
 
+Renderer_SDL2::~Renderer_SDL2()
+{
+    for (auto it = m_textureCache.begin(); it != m_textureCache.end(); ++it) {
+        delete it->second;
+    }
+    m_textureCache.clear();
+}
+
 void Renderer_SDL2::update_window_size()
 {
     SDL_GetWindowSize(m_win, &m_size.x, &m_size.y);
@@ -43,17 +51,26 @@ void Renderer_SDL2::set_swap_interval(int swap)
 
 TextureRef Renderer_SDL2::load_texture(const std::string &name)
 {
+    auto it = m_textureCache.find(name);
+    if (it != m_textureCache.end()) {
+        return it->second;
+    }
     std::string asset_file = AssetManager::DefaultManager().find_resource(name, "png");
     if (!asset_file.empty()) {
-        return new Texture_SDL2(*this, asset_file);
+        TextureRef tex = new Texture_SDL2(*this, asset_file);
+        m_textureCache.insert(std::make_pair(name, tex));
+        return tex;
     }
     return Texture::NullTexture;
 }
 
 void Renderer_SDL2::draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle)
 {
-    SDL_Texture *stex = dynamic_cast<Texture_SDL2*>(texture)->m_texture;
-    SDL_RenderCopyEx(m_rend, stex, (const SDL_Rect*)&src, (const SDL_Rect*)&dst, angle, NULL, SDL_FLIP_NONE);
+    Texture_SDL2* tex = dynamic_cast<Texture_SDL2*>(texture);
+    if (tex) {
+        SDL_Texture *stex = tex->m_texture;
+        SDL_RenderCopyEx(m_rend, stex, (const SDL_Rect*)&src, (const SDL_Rect*)&dst, angle, NULL, SDL_FLIP_NONE);
+    }
 }
 
 void Renderer_SDL2::clear(const Color& color)
