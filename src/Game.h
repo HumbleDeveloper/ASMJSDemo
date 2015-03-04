@@ -47,6 +47,7 @@ public:
     void render();
 
     void add_renderable(Renderable* renderable, int layer = 0);
+    void remove_renderable(Renderable *renderable, bool updatable_also = true);
 private:
     void fire_torpedo(Player& player);
     void check_enemies();

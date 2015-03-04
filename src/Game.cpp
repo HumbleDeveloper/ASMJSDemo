@@ -54,10 +54,9 @@ void Game::update(float delta)
     for (auto it = m_updatables.begin(); it != m_updatables.end(); ) {
         bool keep = (*it)->update( delta );
         if (!keep) {
-            for (int i = 0; i < MAX_LAYERS; ++i) {
-                m_renderables[i].remove(dynamic_cast<Renderable*>(*it));
-            }
-            it = m_updatables.erase(it);
+            Renderable *o = dynamic_cast<Renderable*>(*it);
+            ++it;
+            remove_renderable(o);
         } else {
             ++it;
         }
@@ -82,6 +81,21 @@ void Game::add_renderable(Renderable *renderable, int layer)
         m_updatables.push_back(updatable);
     }
     m_renderables[layer].push_back(renderable);
+}
+
+void Game::remove_renderable(Renderable *renderable, bool updatable_also)
+{
+    if (renderable == 0) return;
+
+    for (int i = 0; i < MAX_LAYERS; ++i) {
+        m_renderables[i].remove(renderable);
+    }
+    if (updatable_also) {
+        Updatable *updatable = dynamic_cast<Updatable*>(renderable);
+        if (updatable) {
+            m_updatables.remove(updatable);
+        }
+    }
 }
 
 void Game::render()
@@ -145,16 +159,23 @@ void Game::check_enemies()
 
             Vector2f velocity(std::cos(angle), std::sin(angle));
 
-            m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Rect(m_renderer.logical_size()), ENEMY_ROTATION));
-            Enemy &enemy = m_enemies.back();
+            auto it = m_enemies.begin();
 
-            Vector2f position(-enemy.size().x / 2, ENEMY_START_BASE + random(ENEMY_START_RANGE));
-            if (velocity.x < 0) {
-                position.x = m_renderer.logical_size().x + enemy.size().x / 2;
+            for (; it != m_enemies.end(); ++it) {
+                if (!it->active()) break;
             }
-            enemy.set_position(position);
-            enemy.activate();
-            add_renderable(&enemy, 0);
+            if (it == m_enemies.end()) {
+                m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Rect(m_renderer.logical_size()), ENEMY_ROTATION));
+                it = --m_enemies.end();
+            }
+
+            Vector2f position(-it->size().x / 2, ENEMY_START_BASE + random(ENEMY_START_RANGE));
+            if (velocity.x < 0) {
+                position.x = m_renderer.logical_size().x + it->size().x / 2;
+            }
+            it->set_position(position);
+            it->activate();
+            add_renderable(&(*it), 0);
         }
     }
 }
