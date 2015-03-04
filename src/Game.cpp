@@ -51,8 +51,6 @@ void Game::apply_input(Game::InputForce force, int value)
 
 void Game::update(float delta)
 {
-    check_collisions();
-
     for (auto it = m_updatables.begin(); it != m_updatables.end(); ) {
         bool keep = (*it)->update( delta );
         if (!keep) {
@@ -72,6 +70,7 @@ void Game::update(float delta)
         fire_torpedo(m_Player);
     }
     check_enemies();
+    check_collisions();
 }
 
 void Game::add_renderable(Renderable *renderable, int layer)
@@ -121,21 +120,54 @@ static float random(float range)
     return float(r) / RAND_MAX * range;
 }
 
+// This would be easier with C++11 variadic templates
+template <typename T, typename T1, typename T2>
+static typename std::list<T>::iterator find_or_create(std::list<T>& list, const T1& a1, const T2& a2)
+{
+    auto it = list.begin();
+    for (; it != list.end(); ++it) {
+        if (!it->active()) break;
+    }
+    if (it == list.end()) {
+        list.push_back(T(a1, a2));
+        it = --list.end();
+    }
+    return it;
+}
+template <typename T, typename T1, typename T2, typename T3>
+static typename std::list<T>::iterator find_or_create(std::list<T>& list, const T1& a1, const T2& a2, const T3& a3)
+{
+    auto it = list.begin();
+    for (; it != list.end(); ++it) {
+        if (!it->active()) break;
+    }
+    if (it == list.end()) {
+        list.push_back(T(a1, a2, a3));
+        it = --list.end();
+    }
+    return it;
+}
+template <typename T, typename T1, typename T2, typename T3, typename T4>
+static typename std::list<T>::iterator find_or_create(std::list<T>& list, const T1& a1, const T2& a2, const T3& a3, const T4& a4)
+{
+    auto it = list.begin();
+    for (; it != list.end(); ++it) {
+        if (!it->active()) break;
+    }
+    if (it == list.end()) {
+        list.push_back(T(a1, a2, a3, a4));
+        it = --list.end();
+    }
+    return it;
+}
+
 void Game::fire_torpedo(Player &player)
 {
     if (!player.can_shoot() || !player.fire_torpedo()) {
         return;
     }
 
-    auto it = m_projectiles.begin();
-
-    for (; it != m_projectiles.end(); ++it) {
-        if (!it->active()) break;
-    }
-    if (it == m_projectiles.end()) {
-        m_projectiles.push_back(Projectile(m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Recti(m_renderer.logical_size()).as<float>()));
-        it = --m_projectiles.end();
-    }
+    auto it = find_or_create(m_projectiles, m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Recti(m_renderer.logical_size()).as<float>());
 
     it->set_position(player.position());
     it->activate();
@@ -150,12 +182,34 @@ bool isActive(const T& o) {
 
 void Game::check_collisions()
 {
-    for (auto it_e = m_enemies.begin(); it_e != m_enemies.end(); ++it_e) {
-        for (auto it_p = m_projectiles.begin(); it_p != m_projectiles.end(); ++it_p) {
-            if (it_e->collides_with(*it_p)) {
+    for (auto it_p = m_projectiles.begin(); it_p != m_projectiles.end(); ++it_p) {
+        if (!it_p->active()) continue;
+        for (auto it_e = m_enemies.begin(); it_e != m_enemies.end(); ++it_e) {
+            if (!it_e->active()) continue;
+
+            if (it_p->collides_with(*it_e)) {
                 it_p->deactivate();
                 it_e->deactivate();
+
+                Rectf bounds = Recti(m_renderer.logical_size()).as<float>();
+
+                auto it = find_or_create(m_explosions, m_renderer.load_texture("explosion"), bounds);
+                it->set_duration(0.35);
+                it->set_velocity(it_e->velocity() * 0.75f);
+                it->set_position(it_e->position());
+                it->activate();
+                add_renderable(&(*it), 0);
             }
+        }
+        if (!it_p->active()) {
+            Rectf bounds = Recti(m_renderer.logical_size()).as<float>();
+
+            auto it = find_or_create(m_explosions, m_renderer.load_texture("explosion"), bounds);
+            it->set_duration(0.2);
+            it->set_velocity(it_p->velocity() / 2);
+            it->set_position(it_p->position());
+            it->activate();
+            add_renderable(&(*it), 0);
         }
     }
 }
@@ -173,15 +227,7 @@ void Game::check_enemies()
 
             Vector2f velocity(std::cos(angle), std::sin(angle));
 
-            auto it = m_enemies.begin();
-
-            for (; it != m_enemies.end(); ++it) {
-                if (!it->active()) break;
-            }
-            if (it == m_enemies.end()) {
-                m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Recti(m_renderer.logical_size()).as<float>(), ENEMY_ROTATION));
-                it = --m_enemies.end();
-            }
+            auto it = find_or_create(m_enemies, m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Recti(m_renderer.logical_size()).as<float>(), ENEMY_ROTATION);
 
             Vector2f position(-it->size().x / 2, ENEMY_START_BASE + random(ENEMY_START_RANGE));
             if (velocity.x < 0) {

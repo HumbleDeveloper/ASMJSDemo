@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Renderable.h"
 #include "Enemy.h"
+#include "Explosion.h"
 
 #include <list>
 
@@ -32,6 +33,7 @@ private:
 
     std::list<Projectile> m_projectiles;
     std::list<Enemy> m_enemies;
+    std::list<Explosion> m_explosions;
 
     static const int MAX_LAYERS = 2;
     static const int TORPEDO_VELOCITY = 128;
