@@ -25,10 +25,20 @@ void loop_iteration(Game* game)
             case SDL_KEYUP:
                 switch (e.key.keysym.scancode) {
                     case SDL_SCANCODE_LEFT:
-                        game->apply_input(Game::InputForce_X_AXIS, e.key.state == SDL_PRESSED ? -32767 : 0);
-                        break;
-                    case SDL_SCANCODE_RIGHT:
-                        game->apply_input(Game::InputForce_X_AXIS, e.key.state == SDL_PRESSED ? 32767 : 0);
+                    case SDL_SCANCODE_RIGHT: {
+                        const Uint8* keys = SDL_GetKeyboardState(0);
+                        Sint16 xpos = 0;
+
+                        if (keys[SDL_SCANCODE_LEFT] && keys[SDL_SCANCODE_RIGHT]) {
+                            xpos = 0;
+                        } else if (keys[SDL_SCANCODE_LEFT]) {
+                            xpos = -32767;
+                        } else if (keys[SDL_SCANCODE_RIGHT]) {
+                            xpos = 32767;
+                        }
+
+                        game->apply_input(Game::InputForce_X_AXIS, xpos);
+                    }
                         break;
                     case SDL_SCANCODE_UP:
                         game->apply_input(Game::InputForce_SHOOT, e.key.state == SDL_PRESSED ? 1 : 0);
