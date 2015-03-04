@@ -9,6 +9,10 @@
 #include "Game.h"
 #include "Renderer_SDL2.h"
 
+#ifdef USE_HUMBLE_API
+#include "humble_api.h"
+#endif
+
 bool done = false;
 
 static SDL_Window *win = NULL;
@@ -70,9 +74,21 @@ void loop_iteration(Game* game)
 
 int main(int argc, char* argv[])
 {
+#ifdef USE_HUMBLE_API
+    humble_init();
+#endif
+
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_CreateWindowAndRenderer(640, 480, SDL_WINDOW_OPENGL, &win, &renderer);
+    int width = 640, height = 480;
+#ifdef USE_HUMBLE_API
+    if (humble_get_player_size(&width, &height) == 0) {
+        width = 640;
+        height = 480;
+    }
+#endif
+
+    SDL_CreateWindowAndRenderer(width, height, SDL_WINDOW_OPENGL, &win, &renderer);
 
     int w,h;
     SDL_GetWindowSize(win, &w, &h);

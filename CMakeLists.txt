@@ -29,6 +29,9 @@ DIRS
 INCLUDES
     src
     ${SDL2_INCLUDE_DIRS}
+    lib/humble
+DEFINES
+    $<$<BOOL:${EMSCRIPTEN}>:USE_HUMBLE_API>
 LINK
     ${SDL2_LIBRARIES}
     ${OPENGL_gl_LIBRARY}
@@ -39,6 +42,9 @@ FLAGS
     $<$<CXX_COMPILER_ID:AppleClang>:-std=c++0x>
 PRE_JS
     ${DATA_FILE}
+JS_LIBS
+    lib/humble/library_cloudfs.jslib
+    lib/humble/library_humble.jslib
 PROPERTIES
     FOLDER Executables
     MACOSX_BUNDLE_BUNDLE_NAME "Humble asm.js Demo"
