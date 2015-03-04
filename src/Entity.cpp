@@ -21,7 +21,7 @@ bool Entity::update(float delta)
 {
     move_position_by(m_velocity * delta);
 
-    if (!m_bounds.contains(position().as<int>()))
+    if (!m_bounds.intersects(Rect((position() - center()).as<int>(), size().as<int>())))
     {
         m_active = false;
     }
