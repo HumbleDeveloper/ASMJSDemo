@@ -51,6 +51,8 @@ void Game::apply_input(Game::InputForce force, int value)
 
 void Game::update(float delta)
 {
+    check_collisions();
+
     for (auto it = m_updatables.begin(); it != m_updatables.end(); ) {
         bool keep = (*it)->update( delta );
         if (!keep) {
@@ -144,6 +146,18 @@ void Game::fire_torpedo(Player &player)
 template <typename T>
 bool isActive(const T& o) {
     return o.active();
+}
+
+void Game::check_collisions()
+{
+    for (auto it_e = m_enemies.begin(); it_e != m_enemies.end(); ++it_e) {
+        for (auto it_p = m_projectiles.begin(); it_p != m_projectiles.end(); ++it_p) {
+            if (it_e->collides_with(*it_p)) {
+                it_p->deactivate();
+                it_e->deactivate();
+            }
+        }
+    }
 }
 
 void Game::check_enemies()

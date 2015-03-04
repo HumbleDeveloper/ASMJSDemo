@@ -28,3 +28,8 @@ bool Entity::update(float delta)
 
     return m_active;
 }
+
+bool Entity::collides_with(const Entity &other)
+{
+    return bounds().intersects(other.bounds());
+}

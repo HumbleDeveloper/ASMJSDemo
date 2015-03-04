@@ -12,6 +12,7 @@
 #include "Texture.h"
 
 #include "Vector2.h"
+#include "Rect.h"
 
 class Sprite : public Renderable {
     TextureRef m_texture;
@@ -35,4 +36,8 @@ public:
     const Vector2f& center() const { return m_center; }
 
     const Vector2f& size() const { return m_size; }
+
+    Rectf bounds() const {
+        return Rectf(m_position - m_center, m_size);
+    }
 };

@@ -51,4 +51,5 @@ public:
 private:
     void fire_torpedo(Player& player);
     void check_enemies();
+    void check_collisions();
 };

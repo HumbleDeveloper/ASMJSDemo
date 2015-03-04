@@ -21,9 +21,12 @@ public:
 
     bool active() const { return m_active; }
     void activate() { m_active = true; }
+    void deactivate() { m_active = false; }
 
     Vector2f velocity() const { return m_velocity; }
     void set_velocity(const Vector2f& velocity) { m_velocity = velocity; }
 
     virtual bool update(float delta);
+
+    bool collides_with(const Entity& other);
 };
