@@ -98,7 +98,7 @@ void Game::fire_torpedo(Player &player)
         if (!it->active()) break;
     }
     if (it == m_projectiles.end()) {
-        m_projectiles.push_back(Projectile(m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY)));
+        m_projectiles.push_back(Projectile(m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Rect(m_renderer.logical_size())));
         it = --m_projectiles.end();
     }
 

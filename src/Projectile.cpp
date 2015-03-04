@@ -8,17 +8,7 @@
 
 #include "Projectile.h"
 
-Projectile::Projectile(TextureRef texture, const Vector2f& velocity) : Sprite(texture), m_active(false), m_velocity(velocity) {
+Projectile::Projectile(TextureRef texture, const Vector2f& velocity, const Rect& bounds) : Entity(texture, velocity, bounds) {
     set_center(size() / 2);
 }
 
-bool Projectile::update(float delta)
-{
-    move_position_by(m_velocity * delta);
-
-    if (position().y < -size().y) {
-        m_active = false;
-    }
-
-    return m_active;
-}
