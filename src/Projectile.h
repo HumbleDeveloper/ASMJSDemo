@@ -12,5 +12,5 @@
 
 class Projectile : public Entity {
 public:
-    Projectile(TextureRef texture, const Vector2f& vector, const Rect& bounds);
+    Projectile(TextureRef texture, const Vector2f& vector, const Rectf& bounds);
 };

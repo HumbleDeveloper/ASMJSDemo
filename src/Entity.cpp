@@ -8,7 +8,7 @@
 
 #include "Entity.h"
 
-Entity::Entity(TextureRef texture, const Vector2f& vector, const Rect& bounds)
+Entity::Entity(TextureRef texture, const Vector2f& vector, const Rectf& bounds)
     : Sprite(texture),
     m_active(false),
     m_velocity(vector),
@@ -21,7 +21,7 @@ bool Entity::update(float delta)
 {
     move_position_by(m_velocity * delta);
 
-    if (!m_bounds.intersects(Rect((position() - center()).as<int>(), size().as<int>())))
+    if (!m_bounds.intersects(Rectf(position() - center(), size())))
     {
         m_active = false;
     }

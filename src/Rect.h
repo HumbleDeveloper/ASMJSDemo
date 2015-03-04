@@ -10,23 +10,29 @@
 
 #include "Vector2.h"
 
+template <typename T>
 struct Rect {
-    int x, y;
-    int w, h;
+    T x, y;
+    T w, h;
 
-    Rect() : x(0), y(0), w(0), h(0) {}
-    Rect(int _x, int _y, int _w, int _h) : x(_x), y(_y), w(_w), h(_h) {}
-    Rect(const Vector2i& size) : x(0), y(0), w(size.x), h(size.y) {}
-    Rect(const Vector2i& position, const Vector2i& size) : x(position.x), y(position.y), w(size.x), h(size.y) {}
+    Rect() : x(T()), y(T()), w(T()), h(T()) {}
+    Rect(T _x, T _y, T _w, T _h) : x(_x), y(_y), w(_w), h(_h) {}
+    Rect(const Vector2<T>& size) : x(T()), y(T()), w(size.x), h(size.y) {}
+    Rect(const Vector2<T>& position, const Vector2<T>& size) : x(position.x), y(position.y), w(size.x), h(size.y) {}
 
-    Vector2i bottom_right() const { return Vector2i(x + w, y + h); }
-
-    bool empty() const {
-        return w == 0 && h == 0;
+    template<typename O>
+    Rect<O> as() const {
+        return Rect<O>(O(x), O(y), O(w), O(h));
     }
 
-    bool contains(const Vector2i& point) const {
-        Vector2i br = bottom_right();
+    Vector2<T> bottom_right() const { return Vector2<T>(x + w, y + h); }
+
+    bool empty() const {
+        return w == T() && h == T();
+    }
+
+    bool contains(const Vector2<T>& point) const {
+        Vector2<T> br = bottom_right();
 
         if (point.x >= x && point.y >= y
             && point.x < br.x && point.y < br.y) {
@@ -35,7 +41,7 @@ struct Rect {
         return false;
     }
 
-    bool intersects(const Rect& r) {
+    bool intersects(const Rect<T>& r) {
         if (empty() || r.empty()) return false;
 
         if (r.x < x + w && x < r.x + r.w && r.y < y + h)
@@ -44,3 +50,6 @@ struct Rect {
         return false;
     }
 };
+
+typedef Rect<int> Recti;
+typedef Rect<float> Rectf;

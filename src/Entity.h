@@ -15,9 +15,9 @@
 class Entity : public Sprite, public Updatable {
     bool m_active;
     Vector2f m_velocity;
-    Rect m_bounds;
+    Rectf m_bounds;
 public:
-    Entity(TextureRef texture, const Vector2f& vector, const Rect& bounds);
+    Entity(TextureRef texture, const Vector2f& vector, const Rectf& bounds);
 
     bool active() const { return m_active; }
     void activate() { m_active = true; }

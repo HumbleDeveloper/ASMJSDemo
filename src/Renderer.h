@@ -28,11 +28,11 @@ public:
     virtual void update_window_size() = 0;
     virtual void clear(const Color& c = Color()) = 0;
     virtual void present() = 0;
-    virtual void draw_rect_fill(const Rect& r, const Color& c) = 0;
+    virtual void draw_rect_fill(const Recti& r, const Color& c) = 0;
 
     virtual TextureRef load_texture(const std::string& name) = 0;
     virtual void draw_texture(TextureRef texture, const Vector2i& dst, float angle = 0.0f);
-    virtual void draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle = 0.0f) = 0;
+    virtual void draw_texture(TextureRef texture, const Recti& src, const Recti& dst, float angle = 0.0f) = 0;
 
     const Vector2i& size() const { return m_size; }
     int width() const { return m_size.x; }

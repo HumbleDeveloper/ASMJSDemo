@@ -131,7 +131,7 @@ void Game::fire_torpedo(Player &player)
         if (!it->active()) break;
     }
     if (it == m_projectiles.end()) {
-        m_projectiles.push_back(Projectile(m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Rect(m_renderer.logical_size())));
+        m_projectiles.push_back(Projectile(m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Recti(m_renderer.logical_size()).as<float>()));
         it = --m_projectiles.end();
     }
 
@@ -165,7 +165,7 @@ void Game::check_enemies()
                 if (!it->active()) break;
             }
             if (it == m_enemies.end()) {
-                m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Rect(m_renderer.logical_size()), ENEMY_ROTATION));
+                m_enemies.push_back(Enemy(m_renderer.load_texture("ufo"), velocity * ENEMY_SPEED, Recti(m_renderer.logical_size()).as<float>(), ENEMY_ROTATION));
                 it = --m_enemies.end();
             }
 

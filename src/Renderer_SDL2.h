@@ -29,11 +29,11 @@ public:
     void set_swap_interval(int swap);
     void update_window_size();
     void clear(const Color& c = Color());
-    void draw_rect_fill(const Rect& r, const Color& c);
+    void draw_rect_fill(const Recti& r, const Color& c);
     void present();
 
     TextureRef load_texture(const std::string& name);
-    void draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle = 0.0f);
+    void draw_texture(TextureRef texture, const Recti& src, const Recti& dst, float angle = 0.0f);
 private:
     void set_draw_color(const Color& c);
 };

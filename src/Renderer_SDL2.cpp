@@ -64,7 +64,7 @@ TextureRef Renderer_SDL2::load_texture(const std::string &name)
     return Texture::NullTexture;
 }
 
-void Renderer_SDL2::draw_texture(TextureRef texture, const Rect& src, const Rect& dst, float angle)
+void Renderer_SDL2::draw_texture(TextureRef texture, const Recti& src, const Recti& dst, float angle)
 {
     Texture_SDL2* tex = dynamic_cast<Texture_SDL2*>(texture);
     if (tex) {
@@ -79,7 +79,7 @@ void Renderer_SDL2::clear(const Color& color)
     SDL_RenderClear(m_rend);
 }
 
-void Renderer_SDL2::draw_rect_fill(const Rect& r, const Color& c)
+void Renderer_SDL2::draw_rect_fill(const Recti& r, const Color& c)
 {
     set_draw_color(c);
     SDL_RenderFillRect(m_rend, (const SDL_Rect*)&r);

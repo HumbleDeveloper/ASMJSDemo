@@ -13,7 +13,7 @@
 class Enemy : public Entity {
     float m_rotate_speed;
 public:
-    Enemy(TextureRef texture, const Vector2f& vector, const Rect& bounds, float rotate_speed);
+    Enemy(TextureRef texture, const Vector2f& vector, const Rectf& bounds, float rotate_speed);
 
     virtual bool update(float delta);
 };

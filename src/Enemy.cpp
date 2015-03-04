@@ -8,7 +8,7 @@
 
 #include "Enemy.h"
 
-Enemy::Enemy(TextureRef texture, const Vector2f& velocity, const Rect& bounds, float rotate_speed)
+Enemy::Enemy(TextureRef texture, const Vector2f& velocity, const Rectf& bounds, float rotate_speed)
     : Entity(texture, velocity, bounds),
     m_rotate_speed(rotate_speed)
 {
