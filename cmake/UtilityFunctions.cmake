@@ -97,7 +97,7 @@ function(_BuildDynamicTarget name type)
         elseif(dir STREQUAL "COPY_FILES")
             set(_mode "copyfiles")
         # Emscripten handling
-        elseif(dir STREQUAL "ASM_FLAG")
+        elseif(dir STREQUAL "ASM_FLAG" OR dir STREQUAL "ASM_FLAGS")
             set(_mode "em_asmflag")
         elseif(dir STREQUAL "PRE_JS")
             set(_mode "em_prejs")
@@ -242,9 +242,15 @@ function(_BuildDynamicTarget name type)
                     "-s ${dir}"
                 )
             elseif(_mode STREQUAL "em_prejs")
-                list(APPEND _em_prejs
-                    ${dir}
-                )
+                if(IS_ABSOLUTE ${dir})
+                    list(APPEND _em_prejs
+                        ${dir}
+                    )
+                else()
+                    list(APPEND _em_prejs
+                        ${CMAKE_CURRENT_SOURCE_DIR}/${dir}
+                    )
+                endif()
             elseif(_mode STREQUAL "em_jslib")
                 if(IS_ABSOLUTE ${dir})
                     list(APPEND _em_jslib
@@ -599,7 +605,7 @@ if(EMSCRIPTEN)
                     string(REGEX REPLACE "^([^@]+)@?.*" "\\1" _path "${entry}")
 
                     if(NOT IS_ABSOLUTE ${_path})
-                        set(_path ${CMAKE_CURRENT_BINARY_DIR}/${_path})
+                        set(_path ${CMAKE_CURRENT_SOURCE_DIR}/${_path})
                     endif()
 
                     file(GLOB_RECURSE _files
@@ -624,12 +630,12 @@ if(EMSCRIPTEN)
                 ${_preload_file}
             DEPENDS
                 ${_packaged_files}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMAND
                 ${EM_PYTHON} ${EM_FILE_PACKAGER}
             ARGS
-                ${output_file}.data
-                --js-output=${output_file}.data.js
+                ${_data_file}
+                --js-output=${_preload_file}
                 --preload ${preload_map}
                 ${extra_opts}
         )
