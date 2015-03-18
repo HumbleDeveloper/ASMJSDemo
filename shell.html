@@ -1200,6 +1200,7 @@
   <span><input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked, 
                                                                             document.getElementById('resize').checked)">
   </span>
+  <span><input type="button" value="Pause/Resume" onclick="if(Browser.mainLoop.scheduler) { Module.pauseMainLoop(); } else { Module.resumeMainLoop(); }"></span>
 </span>
 
     <div class="emscripten">
@@ -1296,21 +1297,19 @@
 
           FS.createFolder('/', 'user_data', true, true);
 
-          // If the provider isn't available then fallback to using IDBFS
-          if (provider_name.length > 0 && CLOUDFS.validateProvider(provider_name)) {
+          // If CLOUDFS isn't compiled in then fallback to using IDBFS
+          if (typeof CLOUDFS != 'undefined') {
               FS.mount(CLOUDFS, {
                   // a list of regexes or string prefixes to synchronize
                   sync: [
                   ],
                   // which provider engine to use.. Looks for a provider in the CLOUD_PROVIDERS object
                   provider: provider_name,
-                  // configuration sent to the provider
-                  cloud: {
-                      applicationtoken: '@EM_CLOUD_APP_TOKEN@'
-                  }
+                  // the scope prefix
+                  scope: '@EM_CLOUD_SCOPE@',
               }, '/user_data');
           } else { // Cloud provider not available
-              Module.print('No Cloud provider found.. Disabling Cloud Support');
+              Module.print('No CloudFS Support.. Falling back to IDBFS');
               FS.mount(IDBFS, {}, '/user_data');
           }
 
