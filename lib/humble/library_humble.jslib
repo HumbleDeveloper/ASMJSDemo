@@ -222,8 +222,8 @@ var LibraryHUMBLE = {
         if (HUMBLE_API.options.playerSize) {
             ret = HUMBLE_API.options.playerSize();
         }
-        if (w) {{{ makeSetValue('w', '0', 'ret.width', 'i32') }}};
-        if (h) {{{ makeSetValue('h', '0', 'ret.height', 'i32') }}};
+        if (w && ret.width > 0) {{{ makeSetValue('w', '0', 'ret.width', 'i32') }}};
+        if (h && ret.height > 0) {{{ makeSetValue('h', '0', 'ret.height', 'i32') }}};
         return ret.locked ? 1 : 0;
     },
     humble_demo_ended__deps: ['$HUMBLE_API'],
