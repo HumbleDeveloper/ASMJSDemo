@@ -10,7 +10,6 @@ var LibraryCLOUDFS = {
                   // backwards compat
                   mount.opts.scope = mount.opts.cloud.applicationtoken;
                 }
-                mount.opts.cloud.scope = mount.opts.scope;
                 Module.print('Cloud provider vendor: ' + provider.vendor);
                 if (!provider.isAvailable(mount.opts.cloud)) {
                   mount.opts.disabled = true;
@@ -403,7 +402,7 @@ var LibraryCLOUDFS = {
             var store = transaction.objectStore(CLOUDFS.DB_STORE_NAME);
             var index = store.index('scope');
 
-            index.openCursor(IDBKeyRange.only(mount.opts.scope)).onsuccess = function(event) {
+            index.openCursor(IDBKeyRange.only(mount.opts.scope || '')).onsuccess = function(event) {
               var cursor = event.target.result;
 
               if (!cursor) {
