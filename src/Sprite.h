@@ -20,6 +20,8 @@ class Sprite : public Renderable {
     Vector2f m_size;
     Vector2f m_center;
     float m_angle;
+	int m_frame;
+	bool m_has_frames;
 public:
     Sprite(TextureRef m_texture);
     virtual void render(Renderer& rend);
@@ -35,7 +37,12 @@ public:
     void set_center(const Vector2f& center) { m_center = center; }
     const Vector2f& center() const { return m_center; }
 
+	void set_size(const Vector2f& size);
     const Vector2f& size() const { return m_size; }
+
+	void set_frame(int frame) { m_frame = frame; }
+	int frame() { return m_frame; }
+	Recti frame_rect(int frame);
 
     Rectf bounds() const {
         return Rectf(m_position - m_center, m_size);
