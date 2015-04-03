@@ -58,6 +58,14 @@ struct Vector2 {
     const Vector2<T> operator *(T o) const {
         return Vector2<T>(x * o, y * o);
     }
+
+	bool operator ==(const Vector2<T>& o) const {
+		return x == o.x && y == o.y;
+	}
+
+	bool operator !=(const Vector2<T>& o) const {
+		return x != o.x || y != o.y;
+	}
 };
 
 typedef Vector2<float> Vector2f;
