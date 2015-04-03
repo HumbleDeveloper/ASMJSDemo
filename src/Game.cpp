@@ -25,13 +25,13 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
     float ypos = m_renderer.logical_size().y - m_Player.size().y / 2;
 
     m_Player.set_move_range(Vector2f(m_Player.center().x, ypos), Vector2f(m_renderer.logical_size().x - m_Player.center().x, ypos));
-    m_Player.set_position(Vector2f(m_renderer.logical_size().x / 2, ypos));
+    m_Player.set_position(Vector2f(m_renderer.logical_size().x / 2.0f, ypos));
 
     for (int i = 0; i < InputForce_MAX; ++i) {
         inputValues[i] = 0;
     }
 
-    std::srand(std::time(0));
+    std::srand((unsigned int)std::time(0));
 }
 
 void Game::apply_input(Game::InputForce force, int value)
@@ -41,7 +41,7 @@ void Game::apply_input(Game::InputForce force, int value)
     }
 }
 
-#define PLAYER_X_SPEED 0.02
+#define PLAYER_X_SPEED 0.02f
 #define ENEMY_MAX 3
 #define ENEMY_PROBABILITY 5
 #define ENEMY_ROTATION 45.0f
@@ -63,8 +63,8 @@ void Game::update(float delta)
     }
 
     if (inputValues[InputForce_X_AXIS]) {
-        int distance = inputValues[InputForce_X_AXIS] * delta * PLAYER_X_SPEED;
-        m_Player.move_position_by(Vector2f(distance, 0));
+        float distance = inputValues[InputForce_X_AXIS] * delta * PLAYER_X_SPEED;
+        m_Player.move_position_by(Vector2f(distance, 0.0f));
     }
     if (inputValues[InputForce_SHOOT]) {
         fire_torpedo(m_Player);
@@ -194,7 +194,7 @@ void Game::check_collisions()
                 Rectf bounds = Recti(m_renderer.logical_size()).as<float>();
 
                 auto it = find_or_create(m_explosions, m_renderer.load_texture("explosion"), bounds);
-                it->set_duration(0.35);
+                it->set_duration(0.35f);
                 it->set_velocity(it_e->velocity() * 0.75f);
                 it->set_position(it_e->position());
                 it->activate();
@@ -205,7 +205,7 @@ void Game::check_collisions()
             Rectf bounds = Recti(m_renderer.logical_size()).as<float>();
 
             auto it = find_or_create(m_explosions, m_renderer.load_texture("explosion"), bounds);
-            it->set_duration(0.2);
+            it->set_duration(0.2f);
             it->set_velocity(it_p->velocity() / 2);
             it->set_position(it_p->position());
             it->activate();
