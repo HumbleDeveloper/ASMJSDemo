@@ -8,6 +8,10 @@
 
 #include "Game.h"
 
+#ifdef WIN32
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
