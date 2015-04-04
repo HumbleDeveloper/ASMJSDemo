@@ -18,7 +18,19 @@
 
 #include <algorithm>
 
-Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
+#define PLAYER_X_SPEED      384.0f
+#define TORPEDO_SPEED       448.0f
+#define TORPEDO_RELOAD_TIME 0.4f
+
+#define ENEMY_MAX           3
+#define ENEMY_PROBABILITY   5
+#define ENEMY_ROTATION      45.0f
+#define ENEMY_SPEED         64.0f
+#define ENEMY_START_BASE    80.0f
+#define ENEMY_START_RANGE   50.0f
+
+
+Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"), TORPEDO_RELOAD_TIME)
 {
     m_renderer.set_swap_interval(1);
 
@@ -38,20 +50,12 @@ Game::Game(Renderer& r) : m_renderer(r), m_Player(r.load_texture("spaceship"))
     std::srand((unsigned int)std::time(0));
 }
 
-void Game::apply_input(Game::InputForce force, int value)
+void Game::apply_input(Game::InputForce force, float value)
 {
     if (force >= 0 && force < InputForce_MAX) {
         inputValues[force] = value;
     }
 }
-
-#define PLAYER_X_SPEED 0.02f
-#define ENEMY_MAX 3
-#define ENEMY_PROBABILITY 5
-#define ENEMY_ROTATION 45.0f
-#define ENEMY_SPEED 64.0f
-#define ENEMY_START_BASE 80.0f
-#define ENEMY_START_RANGE 50.0f
 
 void Game::update(float delta)
 {
@@ -171,7 +175,7 @@ void Game::fire_torpedo(Player &player)
         return;
     }
 
-    auto it = find_or_create(m_projectiles, m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_VELOCITY), Recti(m_renderer.logical_size()).as<float>());
+    auto it = find_or_create(m_projectiles, m_renderer.load_texture("torpedo"), Vector2f(0, -TORPEDO_SPEED), Recti(m_renderer.logical_size()).as<float>());
 
     it->set_position(player.position());
     it->activate();

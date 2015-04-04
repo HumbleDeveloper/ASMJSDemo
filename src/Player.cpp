@@ -8,9 +8,7 @@
 
 #include "Player.h"
 
-#define TORPEDO_DELAY 0.5f
-
-Player::Player(TextureRef texture) : Sprite(texture), m_torpedo_delay(0.0f)
+Player::Player(TextureRef texture, float torpedo_reload_time) : Sprite(texture), m_torpedo_delay(0.0f), m_torpedo_reload_time(torpedo_reload_time)
 {
     set_center(size() / 2);
 }
@@ -47,7 +45,7 @@ bool Player::can_shoot() const
 
 bool Player::fire_torpedo()
 {
-    m_torpedo_delay = TORPEDO_DELAY;
+    m_torpedo_delay = m_torpedo_reload_time;
 
     return true;
 }

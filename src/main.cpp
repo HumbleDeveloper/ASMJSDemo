@@ -36,9 +36,9 @@ void loop_iteration(Game* game)
                         if (keys[SDL_SCANCODE_LEFT] && keys[SDL_SCANCODE_RIGHT]) {
                             xpos = 0;
                         } else if (keys[SDL_SCANCODE_LEFT]) {
-                            xpos = -32767;
+                            xpos = -1.0f;
                         } else if (keys[SDL_SCANCODE_RIGHT]) {
-                            xpos = 32767;
+                            xpos = 1.0f;
                         }
 
                         game->apply_input(Game::InputForce_X_AXIS, xpos);
