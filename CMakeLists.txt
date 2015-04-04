@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
 Project(HumbleASMJSDemo)
 
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
+    message(FATAL_ERROR "You must set your binary directory different from your source")
+endif()
+
 ### pull in boilerplate cmake
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(BoilerPlate)
