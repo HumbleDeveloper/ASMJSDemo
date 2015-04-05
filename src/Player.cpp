@@ -8,7 +8,11 @@
 
 #include "Player.h"
 
-Player::Player(TextureRef texture, float torpedo_reload_time) : Sprite(texture), m_torpedo_delay(0.0f), m_torpedo_reload_time(torpedo_reload_time)
+Player::Player(TextureRef texture, float torpedo_reload_time) :
+    Sprite(texture),
+    m_torpedo_delay(0.0f),
+    m_torpedo_reload_time(torpedo_reload_time),
+    m_normalized_position(0.0f)
 {
     set_center(size() / 2);
 }
@@ -27,7 +31,22 @@ void Player::move_position_by(const Vector2f& adjust_position)
         set_position(m_min);
     } else if (position().x > m_max.x) {
         set_position(m_max);
+    } else {
+        update_normalized_position();
     }
+}
+
+void Player::set_position(const Vector2f &position)
+{
+    Sprite::set_position(position);
+    update_normalized_position();
+}
+
+void Player::update_normalized_position()
+{
+    Vector2f range = (m_max - m_min) / 2;
+    Vector2f mid = position() - m_min - range;
+    m_normalized_position = mid / range;
 }
 
 bool Player::update(float delta)
